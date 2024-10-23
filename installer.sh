@@ -1,11 +1,14 @@
 #!/bin/bash
 
-VENV_NAME = "venv"
+ENV_DIR="env"
+PROJECT_DIR="$(pwd)"
+VENV_DIR="$PROJECT_DIR/venv"
+MAIN_PY="$PROJECT_DIR/main.py"
+COMMAND_NAME="filetransmute"
 
 command_exists() { # função que verifica se um comando existe
     command -v "$1" >/dev/null 2>&1
 }
-
 
 if command_exists python3; then
     echo "Python já está instalado."
@@ -25,23 +28,25 @@ else
 fi
 
 echo "Criando e ativando o ambiente virtual python..."
-python3 -m venv $VENV_NAME
-source $VENV_NAME/bin/activate
+python3 -m venv $ENV_DIR
+source $ENV_DIR/bin/activate
 
 echo "instalando dependencias..."
-pip install -r requirements.txt
+pip install -r "$PROJECT_DIR/requirements.txt"
 
-PROJECT_DIR="/home/filetransmute"
-if [ ! -d "$PROJECT_DIR" ]; then
-    echo "Diretório $PROJECT_DIR não encontrado. Criando o diretório..."
-    mkdir -p "$PROJECT_DIR"
+
+echo "Criando o comando $COMMAND_NAME..."
+if [ ! -d "/usr/local/bin" ]; then
+    echo "/usr/local/bin não existe. Criando o diretório..."
+    sudo mkdir -p /usr/local/bin
 fi
 
-echo "Criando o comando 'filetransmute'..." #criando o comando 'filetransmute'
-echo "#!/bin/bash" | sudo tee /usr/local/bin/filetransmute
-echo "python3 $PROJECT_DIR/main.py \"\$@\"" | sudo tee -a /usr/local/bin/filetransmute
-sudo chmod +x /usr/local/bin/filetransmute
+{
+    echo "#!/usr/bin/env python3"
+    cat "$MAIN_PY"
+} | sudo tee "/usr/local/bin/$COMMAND_NAME" > /dev/null
 
-echo "Instalação concluida, Use 'filetransmute' para iniciar a aplicação!"
+sudo chmod +x "/usr/local/bin/$COMMAND_NAME"
 
+echo "Instalação concluída. Use '$COMMAND_NAME' para iniciar a aplicação!"
 deactivate
