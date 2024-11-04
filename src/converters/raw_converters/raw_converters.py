@@ -1,4 +1,0 @@
-'''
-funções conversoras aqui
-'''
-

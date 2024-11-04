@@ -1,13 +1,13 @@
 import sys
-import subprocess
 import os
-from converters import audio
-from converters import documents
-from converters import ebook
-from converters import gif
+from converters.audio_converter import AudioConverter
+from converters.document_converter import DocumentConverter
+from converters.ebook_converter import EbookConverter
+from converters.gif_converter import GIFConverter
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QVBoxLayout, QPushButton, QMessageBox, QWidget, QDialog, QHBoxLayout
+    QApplication, QMainWindow, QVBoxLayout, QPushButton, QMessageBox, QWidget, QDialog,QFileDialog
 )
+
 class FileTransmute(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -19,7 +19,7 @@ class FileTransmute(QMainWindow):
 
         layout = QVBoxLayout()
 
-        button = QPushButton("Oque deseja converter?", self)
+        button = QPushButton("O que deseja converter?", self)
         button.clicked.connect(self.show_conversion_options)
         layout.addWidget(button)
 
@@ -31,27 +31,10 @@ class FileTransmute(QMainWindow):
         options_dialog = ConversationOptionsDialog(self)
         options_dialog.exec_()
 
-    def choose(self):
-        pass
-
-'''    def convert_odt_to_pdf(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Escolha um arquivo ODT", "", "ODT files (*.odt)")
-        
-        if not file_path:
-            return 
-
-        output_path = os.path.splitext(file_path)[0] + ".pdf"
-
-        try:
-            subprocess.run(['pandoc', file_path, '-o', output_path], check=True)
-            QMessageBox.information(self, "Sucesso", f"Arquivo convertido para {output_path}")
-        except subprocess.CalledProcessError:
-            QMessageBox.critical(self, "Erro", "Falha na conversão do arquivo.")'''
-
 class ConversationOptionsDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Escolha o quer formatar")
+        self.setWindowTitle("Escolha o que quer formatar")
         self.setGeometry(250, 250, 400, 200)
 
         layout = QVBoxLayout()
@@ -77,6 +60,28 @@ class ConversationOptionsDialog(QDialog):
         layout.addWidget(image_button)
 
         self.setLayout(layout)
+
+    def convert_audio(self):
+
+        file_path, _ = QFileDialog.getOpenFileName(self, "Escolha um arquivo de áudio", "", "Audio files (*.mp3 *.wav *.ogg)")
+        if not file_path:
+            return
+        
+        converter = AudioConverter(file_path)
+        output_file = converter.convert('wav')  
+        QMessageBox.information(self, "Sucesso", f"Arquivo convertido para {output_file}")
+
+    def convert_document(self):
+        pass
+
+    def convert_ebook(self):
+        pass
+
+    def convert_gif(self):
+        pass
+
+    def convert_image(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
