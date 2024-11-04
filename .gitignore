@@ -5,5 +5,7 @@ venv
 myenv
 
 # notes
-
 notas.txt
+
+# python cache
+__pycache__/
