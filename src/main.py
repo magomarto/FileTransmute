@@ -11,7 +11,7 @@ class FileTransmute(QWidget):
 
     def initUI(self):
         self.setWindowTitle("FileTransmute")
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(200, 200, 800, 400)
 
         layout = QVBoxLayout()
 
@@ -30,7 +30,7 @@ class FileTransmute(QWidget):
         output_path = os.path.splitext(file_path)[0] + ".pdf"
 
         try:
-            subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', file_path], check=True)
+            subprocess.run(['pandoc', file_path, '-o', output_path], check=True)
             QMessageBox.information(self, "Sucesso", f"Arquivo convertido para {output_path}")
         except subprocess.CalledProcessError:
             QMessageBox.critical(self, "Erro", "Falha na conversão do arquivo.")

@@ -11,33 +11,33 @@ command_exists() { # função que verifica se um comando existe
 }
 
 if command_exists python3; then
-    echo "Python já está instalado."
+    echo "Python already installed"
 else
-    echo "Python não encontrado. Instalando..."
+    echo "Python not found. Installing..."
     sudo apt update
     sudo apt install python3 -y
-    echo "Python instalado com sucesso."
+    echo "Python successfully installed"
 fi
 
 if command_exists pip; then
-    echo "Pip já está instalado."
+    echo "Pip already installed."
 else
-    echo "Pip não encontrado. Instalando..."
+    echo "Pip not found. Installing..."
     sudo apt install python3-pip -y
-    echo "Pip instalado com sucesso."
+    echo "Pip successfully installed."
 fi
 
-echo "Criando e ativando o ambiente virtual python..."
+echo "Creating and activing a python virtual env..."
 python3 -m venv $ENV_DIR
 source $ENV_DIR/bin/activate
 
-echo "instalando dependencias..."
+echo "Installing depedencies..."
 pip install -r "$PROJECT_DIR/requirements.txt"
 
 
-echo "Criando o comando $COMMAND_NAME..."
+echo "Creating the command $COMMAND_NAME..."
 if [ ! -d "/usr/local/bin" ]; then
-    echo "/usr/local/bin não existe. Criando o diretório..."
+    echo "/usr/local/bin do not exist. Creating a directory..."
     sudo mkdir -p /usr/local/bin
 fi
 
@@ -48,5 +48,5 @@ fi
 
 sudo chmod +x "/usr/local/bin/$COMMAND_NAME"
 
-echo "Instalação concluída. Use '$COMMAND_NAME' para iniciar a aplicação!"
+echo "Installation finished. Use '$COMMAND_NAME' to launch the application!"
 deactivate
