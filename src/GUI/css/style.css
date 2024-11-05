@@ -1,0 +1,30 @@
+/* style.css */
+/* trabalhar na melhoria do estilo da aplicação*/
+QPushButton {
+    font-size: 14px;
+    padding: 10px;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 8px;
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: #1976D2;
+}
+
+QPushButton:pressed {
+    background-color: #1565C0;
+}
+
+QMainWindow {
+    background-color: #f4f4f4;
+}
+
+QDialog {
+    background-color: #ffffff;
+}
+
+QWidget {
+    font-family: Arial, sans-serif;
+}
